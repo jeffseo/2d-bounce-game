@@ -1,0 +1,24 @@
+{
+  "name": "canvas-run-and-gun",
+  "version": "1.0.0",
+  "description": "Sidescroller/run and gun game on HTML5 Canvas + JS",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffseo/canvas-run-and-gun.git"
+  },
+  "author": "seo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffseo/canvas-run-and-gun/issues"
+  },
+  "homepage": "https://github.com/jeffseo/canvas-run-and-gun#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "morgan": "^1.8.1"
+  }
+}
