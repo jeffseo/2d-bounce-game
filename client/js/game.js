@@ -11,7 +11,7 @@ class Game {
     this.controller = new Controller(this.canvas);
     this.player = new Player(this.canvas, this.canvas.width * .25,
       this.canvas.height * .75, getRandomColor(), DEFAULT_MOVEMENT_SPEED,
-      DEFAULT_PLAYER_SIZE);
+      DEFAULT_PLAYER_SIZE, this.controller);
   }
 
   start() {
@@ -22,6 +22,7 @@ class Game {
   updateGame() {
     clearCanvas();
     this.drawBackground();
+    this.player.move();
     this.player.draw();
   }
 

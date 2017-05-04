@@ -25,10 +25,8 @@ const getCanvas = () => {
 }
 
 const clearCanvas = () => {
-  const canvas2DContext = getCanvas().getContext("2d");
-  return () => {
-    canvas2DContext.clearRect(0, 0, canvas.width, canvas.height);
-  }
+  let canvas = getCanvas();
+  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 }
 
 // return 2D rendering context: used to paint on the Canvas
