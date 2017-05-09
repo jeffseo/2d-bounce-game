@@ -2,6 +2,7 @@
 // golden ratio apparently is width = 1.61 * height
 const MAX_WIDTH = 1100;
 const MAX_HEIGHT = 680;
+const BACKGROUND_COLOR = '#efefef';
 
 const init = () => {
   //remove listener, no longer needed
@@ -25,8 +26,14 @@ const getCanvas = () => {
 }
 
 const clearCanvas = () => {
-  let canvas = getCanvas();
-  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+  const canvas = getCanvas();
+  const ctx = canvas.getContext("2d");
+  if (BACKGROUND_COLOR) {
+    ctx.fillStyle = BACKGROUND_COLOR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  } else {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 }
 
 // return 2D rendering context: used to paint on the Canvas
