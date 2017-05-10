@@ -29,39 +29,44 @@ class Drawable {
 }
 
 class Player extends Drawable {
-  constructor(canvas, x, y, color, speed, size, controller) {
+  constructor(canvas, x, y, color, speed, width, height, controller) {
     super(canvas, x, y, color);
     this.speed = speed;
-    this.size = size;
+    this.width = width;
+    this.height = height;
     this.controller = controller;
     this.state = {
       jump: false,
       jumpDirection: "up",
       jumpTrackerValue: this.y,
-      expectedJumpHeight: this.y - this.size * 4,
+      expectedJumpHeight: this.y - this.height * 4,
     };
   }
 
   draw() {
     if (this.context) {
       // Head/body
-      this.context.strokeStyle = this.color;
+      this.context.strokeStyle = 'black';
       this.context.fillStyle = this.color;
       this.context.beginPath();
-      this.context.rect(this.x, this.y, this.size, this.size);
+      this.context.rect(this.x, this.y, this.width, this.height);
+      this.context.fill();
       this.context.stroke();
 
       // eyes
       this.context.beginPath();
-      this.context.arc(this.x + (this.size * .2), this.y + (this.size * .3), 2, 0, Math.PI * 2, true); // draw left eye
+      this.context.fillStyle = 'black';
+      this.context.arc(this.x + (this.width * .2), this.y + (this.height * .3), 2, 0, Math.PI * 2, true); // draw left eye
       this.context.fill();
-      this.context.arc(this.x + (this.size * .8), this.y + (this.size * .3), 2, 0, Math.PI * 2, true); // draw right eye
+      this.context.arc(this.x + (this.width * .8), this.y + (this.height * .3), 2, 0, Math.PI * 2, true); // draw right eye
       this.context.fill();
 
       // mouth
       this.context.beginPath();
-      this.context.arc(this.x + (this.size * .5), this.y + (this.size * .5), 4, 0, Math.PI, false); // draw semicircle for smiling
+      this.context.arc(this.x + (this.width * .5), this.y + (this.height * .5), 4, 0, Math.PI, false); // draw semicircle for smiling
       this.context.stroke();
+
+      this.context.closePath();
     }
   }
 
@@ -71,15 +76,15 @@ class Player extends Drawable {
 
   move() {
     if (this.controller && this.canvas) {
-      if (this.controller.isKeyPressed('up') && this.y > this.size && this.state.jump == false) {
+      if (this.controller.isKeyPressed('up') && this.y > this.height && this.state.jump == false) {
         this.state.jump = true;
       }
 
       if (this.state.jump) {
         if (this.state.jumpDirection == 'up') {
           this.y -= this.speed;
-          if (this.y < this.size) {
-            this.y = this.size;
+          if (this.y < this.height) {
+            this.y = this.height;
           }
 
           this.state.jumpTrackerValue -= this.speed;
@@ -111,10 +116,10 @@ class Player extends Drawable {
         }
       }
 
-      if (this.controller.isKeyPressed('right') && this.x < this.canvas.width - this.size) {
+      if (this.controller.isKeyPressed('right') && this.x < this.canvas.width - this.width) {
         this.x += this.speed;
         if (this.x > this.canvas.width) {
-          this.x = this.canvas.width - this.size;
+          this.x = this.canvas.width - this.width;
         }
       }
     }
@@ -123,8 +128,8 @@ class Player extends Drawable {
 }
 
 class Obstacle extends Drawable {
-  constructor(x, y, radius, color, speed) {
-    super(x, y, color);
+  constructor(canvas, x, y, radius, color, speed) {
+    super(canvas, x, y, color);
     this.radius = radius;
     this.speed = speed;
   }
@@ -132,6 +137,7 @@ class Obstacle extends Drawable {
   draw() {
     if (this.context) {
       this.context.beginPath();
+      this.context.strokeStyle = "black";
       this.context.arc(this.x, this.y, this.radius, 0, Math.PI*2);
       this.context.fillStyle = this.color;
       this.context.fill();
