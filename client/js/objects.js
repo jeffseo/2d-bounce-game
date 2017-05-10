@@ -46,7 +46,7 @@ class Player extends Drawable {
   draw() {
     if (this.context) {
       // Head/body
-      this.context.strokeStyle = 'black';
+      this.context.strokeStyle = 'gray';
       this.context.fillStyle = this.color;
       this.context.beginPath();
       this.context.rect(this.x, this.y, this.width, this.height);
@@ -62,6 +62,7 @@ class Player extends Drawable {
       this.context.fill();
 
       // mouth
+      this.context.strokeStyle = 'black';
       this.context.beginPath();
       this.context.arc(this.x + (this.width * .5), this.y + (this.height * .5), 4, 0, Math.PI, false); // draw semicircle for smiling
       this.context.stroke();

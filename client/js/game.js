@@ -25,14 +25,15 @@ class Game {
   }
 
   updateGame() {
+    this.detectCollision();
     clearCanvas();
     this.drawBackground();
+    this.drawScore();
     this.player.move();
     this.player.draw();
     this.moveObstacles();
     this.drawObstacles();
     this.refreshObstacles();
-    this.detectCollision();
   }
 
   incrementTimerAndScore() {
@@ -48,6 +49,12 @@ class Game {
     this.context.stroke();
   }
 
+  drawScore() {
+    this.context.beginPath();
+    this.context.font = '20pt Arial';
+    this.context.strokeText(`Score: ${this.score}`, 0, parseInt(this.context.font));
+  }
+
   generateObstacles() {
     // generate obstacle if true 50% probabiblity
     if (Math.random() < 0.5) {
@@ -55,9 +62,16 @@ class Game {
       if (randomNumber != 0) {
         const radius = Math.floor(randomNumber * DEFAULT_PLAYER_SIZE);
         const yPosition = (this.canvas.height * .75) + radius;
+        let xPosition = this.canvas.width + radius;
         const randomSpeed = Math.floor(randomNumber * DEFAULT_MOVEMENT_SPEED);
         const scaledSpeed = Math.floor(randomSpeed * this.score/100) + 1;
-        const obstacle = new Obstacle(this.canvas, this.canvas.width + radius, yPosition, radius, getRandomColor(), scaledSpeed);
+        if (this.obstacles.length > 0) {
+          const lastObstacle = this.obstacles[this.obstacles.length - 1];
+          if ((xPosition - radius) - (lastObstacle.x + lastObstacle.radius) < DEFAULT_PLAYER_SIZE) {
+            xPosition += (DEFAULT_PLAYER_SIZE * 5);
+          }
+        }
+        const obstacle = new Obstacle(this.canvas, xPosition, yPosition, radius, getRandomColor(), scaledSpeed);
         this.obstacles.push(obstacle);
       }
     }
@@ -84,7 +98,7 @@ class Game {
   }
 
   // http://stackoverflow.com/questions/21089959/detecting-collision-of-rectangle-with-circle
-  // return true if the rectangle and circle are colliding
+  // return true if the rectangle (player) and circle (obstacle) are colliding
   isCollisionWithObstacle(obstacle) {
     var distX = Math.abs(obstacle.x - this.player.x - this.player.width/2);
     var distY = Math.abs(obstacle.y - this.player.y - this.player.height/2);
@@ -101,9 +115,8 @@ class Game {
   }
 
   reset() {
-    this.player = new Player(this.canvas, this.canvas.width * .25,
-      this.canvas.height * .75, getRandomColor(), DEFAULT_MOVEMENT_SPEED,
-      DEFAULT_PLAYER_SIZE, DEFAULT_PLAYER_SIZE, this.controller);
+    this.player.setColor(getRandomColor());
+    this.player.setCoordinates(this.canvas.width * .25, this.canvas.height * .75);
     this.score = 0;
     this.timer = 0;
     this.obstacles = [];
@@ -115,7 +128,7 @@ const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
   var color = '#';
   for (var i = 0; i < 6; i++ ) {
-      color += letters[Math.floor(Math.random() * 16)];
+      color += letters[Math.floor(Math.random() * 15)];
   }
   return color;
 }
