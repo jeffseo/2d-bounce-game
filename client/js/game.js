@@ -25,7 +25,6 @@ class Game {
   }
 
   updateGame() {
-    this.detectCollision();
     clearCanvas();
     this.drawBackground();
     this.drawScore();
@@ -34,6 +33,7 @@ class Game {
     this.moveObstacles();
     this.drawObstacles();
     this.refreshObstacles();
+    this.detectCollision();
   }
 
   incrementTimerAndScore() {
@@ -65,12 +65,11 @@ class Game {
         let xPosition = this.canvas.width + radius;
         const randomSpeed = Math.floor(randomNumber * DEFAULT_MOVEMENT_SPEED);
         const scaledSpeed = Math.floor(randomSpeed * this.score/100) + 1;
-        if (this.obstacles.length > 0) {
-          const lastObstacle = this.obstacles[this.obstacles.length - 1];
-          if ((xPosition - radius) - (lastObstacle.x + lastObstacle.radius) < DEFAULT_PLAYER_SIZE) {
+        this.obstacles.forEach((existingObstacle) => {
+          if ((xPosition - radius) - (existingObstacle.x + existingObstacle.radius) <= DEFAULT_PLAYER_SIZE) {
             xPosition += (DEFAULT_PLAYER_SIZE * 5);
           }
-        }
+        });
         const obstacle = new Obstacle(this.canvas, xPosition, yPosition, radius, getRandomColor(), scaledSpeed);
         this.obstacles.push(obstacle);
       }

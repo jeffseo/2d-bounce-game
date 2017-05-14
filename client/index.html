@@ -3,22 +3,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-
-  <title>Run-and-Gun</title>
+  <title>2D-Bounce</title>
   <meta name="description" content="Sidescroller game built on HTML5 Canvas + JavaScript">
   <meta name="author" content="Jeff Seo">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background-color: #efefef;
-    }
-    canvas {
-      padding: 0;
-      margin: auto;
-      /*background: #eee;*/
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="css/layout.css">
   <script src="js/controller.js"></script>
   <script src="js/objects.js"></script>
   <script src="js/game.js"></script>
@@ -26,6 +15,9 @@
 </head>
 
 <body>
+  <div id="banner">
+    <h1>2D-Bounce Game <br/>Instructions: Use arrow keys to move!</h1>
+  </div>
   <canvas id="gameCanvas"></canvas>
 </body>
 

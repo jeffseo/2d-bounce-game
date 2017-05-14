@@ -1,0 +1,14 @@
+body {
+  background-color: #efefef;
+}
+
+canvas {
+  padding: 0;
+  margin: auto;
+  /*background: #eee;*/
+  display: block;
+}
+
+#banner {
+  text-align: center;
+}
