@@ -9,8 +9,8 @@ class Game {
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
     this.controller = new Controller(this.canvas);
-    this.player = new Player(this.canvas, this.canvas.width * .25,
-      this.canvas.height * .75, getRandomColor(), DEFAULT_MOVEMENT_SPEED,
+    this.player = new Player(this.canvas, this.canvas.width * .25 - DEFAULT_PLAYER_SIZE/2,
+      this.canvas.height * .75 - DEFAULT_PLAYER_SIZE/2, getRandomColor(), DEFAULT_MOVEMENT_SPEED,
       DEFAULT_PLAYER_SIZE, DEFAULT_PLAYER_SIZE, this.controller);
     this.score = 0;
     this.timer = 0;
@@ -28,17 +28,25 @@ class Game {
     clearCanvas();
     this.drawBackground();
     this.drawScore();
-    this.player.move();
-    this.player.draw();
-    this.moveObstacles();
-    this.drawObstacles();
-    this.refreshObstacles();
+    this.updatePlayer();
+    this.updateObstacles();
     this.detectCollision();
+    this.refreshObstacles();
   }
 
   incrementTimerAndScore() {
     this.timer++;
     this.score++;
+  }
+
+  updatePlayer() {
+    this.player.move();
+    this.player.draw();
+  }
+
+  updateObstacles() {
+    this.moveObstacles();
+    this.drawObstacles();
   }
 
   drawBackground() {
@@ -92,6 +100,7 @@ class Game {
     for (let i = 0; i < this.obstacles.length; i++) {
       if (this.isCollisionWithObstacle(this.obstacles[i])) {
         this.reset();
+        break;
       }
     }
   }
@@ -99,8 +108,8 @@ class Game {
   // http://stackoverflow.com/questions/21089959/detecting-collision-of-rectangle-with-circle
   // return true if the rectangle (player) and circle (obstacle) are colliding
   isCollisionWithObstacle(obstacle) {
-    var distX = Math.abs(obstacle.x - this.player.x - this.player.width/2);
-    var distY = Math.abs(obstacle.y - this.player.y - this.player.height/2);
+    var distX = Math.abs(obstacle.x - (this.player.x - this.player.width/2) - this.player.width/2);
+    var distY = Math.abs(obstacle.y - (this.player.y + this.player.height/2) - this.player.height/2);
 
     if (distX > (this.player.width/2 + obstacle.radius)) { return false; }
     if (distY > (this.player.height/2 + obstacle.radius)) { return false; }
@@ -115,7 +124,7 @@ class Game {
 
   reset() {
     this.player.setColor(getRandomColor());
-    this.player.setCoordinates(this.canvas.width * .25, this.canvas.height * .75);
+    this.player.setCoordinates(this.canvas.width * .25, this.canvas.height * .75 - this.player.height/2);
     this.score = 0;
     this.timer = 0;
     this.obstacles = [];

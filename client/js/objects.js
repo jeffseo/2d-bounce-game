@@ -49,22 +49,22 @@ class Player extends Drawable {
       this.context.strokeStyle = 'gray';
       this.context.fillStyle = this.color;
       this.context.beginPath();
-      this.context.rect(this.x, this.y, this.width, this.height);
+      this.context.rect(this.x - this.width/2, this.y + this.height/2, this.width, this.height);
       this.context.fill();
       this.context.stroke();
 
       // eyes
       this.context.beginPath();
       this.context.fillStyle = 'black';
-      this.context.arc(this.x + (this.width * .2), this.y + (this.height * .3), 2, 0, Math.PI * 2, true); // draw left eye
+      this.context.arc(this.x - this.width/2 + (this.width * .2), this.y + this.height/2 + (this.height * .3), 2, 0, Math.PI * 2, true); // draw left eye
       this.context.fill();
-      this.context.arc(this.x + (this.width * .8), this.y + (this.height * .3), 2, 0, Math.PI * 2, true); // draw right eye
+      this.context.arc(this.x - this.width/2 + (this.width * .8), this.y + this.height/2 + (this.height * .3), 2, 0, Math.PI * 2, true); // draw right eye
       this.context.fill();
 
       // mouth
       this.context.strokeStyle = 'black';
       this.context.beginPath();
-      this.context.arc(this.x + (this.width * .5), this.y + (this.height * .5), 4, 0, Math.PI, false); // draw semicircle for smiling
+      this.context.arc(this.x - this.width/2 + (this.width * .5), this.y + this.height/2 + (this.height * .5), 4, 0, Math.PI, false); // draw semicircle for smiling
       this.context.stroke();
 
       this.context.closePath();
@@ -84,8 +84,8 @@ class Player extends Drawable {
       if (this.state.jump) {
         if (this.state.jumpDirection == 'up') {
           this.y -= this.speed;
-          if (this.y < this.height) {
-            this.y = this.height;
+          if (this.y + this.height/2 < this.height/2) {
+            this.y = this.height/2;
           }
 
           this.state.jumpTrackerValue -= this.speed;
@@ -94,8 +94,8 @@ class Player extends Drawable {
           }
         } else {
           this.y += this.speed;
-          if (this.y > this.canvas.height * .75) {
-            this.y = this.canvas.height * .75
+          if (this.y + this.height/2> this.canvas.height * .75) {
+            this.y = this.canvas.height * .75 - this.height/2
             this.state.jump = false;
             this.state.jumpDirection = 'up';
             this.state.jumpTrackerValue = this.y;
@@ -112,15 +112,15 @@ class Player extends Drawable {
 
       if (this.controller.isKeyPressed('left') && this.x > 0) {
         this.x -= this.speed;
-        if (this.x < 0) {
-          this.x = 0;
+        if (this.x < this.width/2) {
+          this.x = this.width/2;
         }
       }
 
-      if (this.controller.isKeyPressed('right') && this.x < this.canvas.width - this.width) {
+      if (this.controller.isKeyPressed('right') && this.x < this.canvas.width - this.width/2) {
         this.x += this.speed;
-        if (this.x > this.canvas.width) {
-          this.x = this.canvas.width - this.width;
+        if (this.x > this.canvas.width - this.width/2) {
+          this.x = this.canvas.width - this.width/2;
         }
       }
     }
